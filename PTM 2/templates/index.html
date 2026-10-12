@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Sistem Akademik</title>
+        <link rel="stylesheet"
+            href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <header class="hero">
+            <div class="container">
+                <p class="eyebrow">PBO · PERTEMUAN 2</p>
+                <h1>Sistem Akademik</h1>
+                <p>Program Studi, Mahasiswa, Mata Kuliah, dan KRS dengan Python
+                    + Flask.</p>
+            </div>
+        </header>
+        <main class="container">
+            <section class="metrics">
+                <article class="metric"><span>Program Studi</span><strong>{{
+                        program_studi|length
+                        }}</strong></article>
+                <article class="metric"><span>Mahasiswa</span><strong>{{
+                        mahasiswa|length
+                        }}</strong></article>
+                <article class="metric"><span>Mata Kuliah</span><strong>{{
+                        mata_kuliah|length
+                        }}</strong></article>
+                <article class="metric"><span>Relasi KRS</span><strong>{{
+                        daftar_krs|length
+                        }}</strong></article>
+            </section>
+            <section class="panel">
+                <div class="section-heading"><div><p
+                            class="eyebrow">01</p><h2>Program
+                            Studi</h2></div></div>
+                <div class="cards">
+                    {% for p in program_studi %}
+                    <article class="card"><span class="tag">{{ p.kode
+                            }}</span><h3>{{ p.nama }}</h3><p>{{
+                            p.mahasiswa|length }} mahasiswa
+                            terhubung</p></article>
+                    {% endfor %}
+                </div>
+            </section>
+            <section class="panel">
+                <div class="section-heading"><div><p class="eyebrow">02
+                        </p><h2>Daftar
+                            Mahasiswa</h2></div></div>
+                <div
+                    class="table-wrap"><table><thead><tr><th>NIM</th><th>Nama</th><th>Program
+                                    Studi</th><th>Jumlah
+                                    KRS</th></tr></thead><tbody>
+                            {% for m in mahasiswa %}
+                            <tr><td>{{ m.nim }}</td><td>{{ m.nama }}</td><td>{{
+                                    m.prodi.nama }}</td><td>{{
+                                    m.krs|length }}</td></tr>
+                            {% endfor %}
+                        </tbody></table></div>
+            </section>
+            <section class="panel">
+                <div class="section-heading"><div><p
+                            class="eyebrow">03</p><h2>Mata
+                            Kuliah</h2></div></div>
+                <div class="cards">
+                    {% for mk in mata_kuliah %}
+                    <article class="card"><span class="tag">{{ mk.kode }} · {{
+                            mk.sks }} SKS</span><h3>{{
+                            mk.nama }}</h3><p>{{ mk.peserta_krs|length }} relasi
+                            pengambilan</p></article>
+                    {% endfor %}
+                </div>
+            </section>
+            <section class="panel">
+                <div class="section-heading"><div><p
+                            class="eyebrow">04</p><h2>Data KRS</h2><p
+                            class="muted">KRS menjadi penghubung Mahasiswa dan
+                            Mata Kuliah, sekaligus menyimpan
+                            atribut semester/nilai.</p></div></div>
+                <div
+                    class="table-wrap"><table><thead><tr><th>NIM</th><th>Mahasiswa</th><th>Kode
+                                    MK</th><th>Mata
+                                    Kuliah</th><th>SKS</th><th>Semester</th><th>Nilai</th></tr></thead><tbody>
+                            {% for item in daftar_krs %}
+                            <tr><td>{{ item.nim }}</td><td>{{ item.mahasiswa
+                                    }}</td><td>{{ item.kode_mk }}</td><td>{{
+                                    item.mata_kuliah }}</td><td>{{ item.sks
+                                    }}</td><td>{{ item.semester }}</td><td>{{
+                                    item.nilai
+                                    }}</td></tr>
+                            {% endfor %}
+                        </tbody></table></div>
+            </section>
+            <footer>STIKOM Poltek Cirebon · Bahan Ajar PBO · Model objek untuk
+                pembelajaran</footer>
+        </main>
+    </body>
+</html>

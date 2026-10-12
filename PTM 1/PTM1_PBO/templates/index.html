@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Data Mahasiswa</title>
+
+        <link rel="stylesheet"
+            href="{{ url_for('static', filename='style.css') }}">
+    </head>
+
+    <body>
+        <div class="container">
+
+            <header class="header">
+                <div>
+                    <h1>System Information mahasiswa TI</h1>
+                    <p class="subtitle">
+                        GUI dasar Flask dengan konsep Class dan Object
+                    </p>
+                </div>
+            </header>
+
+            <main class="grid">
+
+                <!-- Form Tambah Mahasiswa -->
+                <section class="card">
+                    <h2>Tambah Mahasiswa</h2>
+
+                    <p class="help">
+                        Form ini membuat object Mahasiswa baru.
+                    </p>
+
+                    {% if pesan %}
+                    <div class="alert">
+                        {{ pesan }}
+                    </div>
+                    {% endif %}
+
+                    <form method="post" class="form">
+
+                        <label for="nim">NIM</label>
+
+                        <input
+                            id="nim"
+                            name="nim"
+                            type="text"
+                            placeholder="Contoh: 20260003"
+                            required>
+
+                        <label for="nama">Nama</label>
+
+                        <input
+                            id="nama"
+                            name="nama"
+                            type="text"
+                            placeholder="Nama lengkap"
+                            required>
+
+                        <label for="prodi">Program Studi</label>
+
+                        <input
+                            id="prodi"
+                            name="prodi"
+                            type="text"
+                            value="Teknik Informatika"
+                            required>
+
+                        <label for="semester">Semester</label>
+
+                        <input
+                            id="semester"
+                            name="semester"
+                            type="number"
+                            placeholder="Semester"
+                            required>
+
+                        <button type="submit">
+                            Simpan Data
+                        </button>
+
+                    </form>
+                </section>
+
+                <!-- Daftar Mahasiswa -->
+                <section class="card">
+
+                    <div class="section-head">
+
+                        <div>
+                            <h2>Daftar Mahasiswa</h2>
+
+                            <p class="help">
+                                Data tersimpan dalam list.
+                            </p>
+                        </div>
+
+                        <span class="badge">
+                            {{ mahasiswa|length }} Data
+                        </span>
+
+                    </div>
+
+                    <!-- Tombol Reset -->
+                    <form
+                        action="{{ url_for('reset') }}"
+                        method="post"
+                        style="margin-bottom: 15px;">
+
+                        <button
+                            type="submit"
+                            onclick="return confirm('Reset semua data ke data awal?')">
+                            Reset Aplikasi
+                        </button>
+
+                    </form>
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>NIM</th>
+                                    <th>Nama</th>
+                                    <th>Prodi</th>
+                                    <th>Semester</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {% for m in mahasiswa %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ loop.index }}
+                                    </td>
+
+                                    <td>
+                                        {{ m.nim }}
+                                    </td>
+
+                                    <td>
+                                        {{ m.nama }}
+                                    </td>
+
+                                    <td>
+                                        {{ m.prodi }}
+                                    </td>
+
+                                    <td>
+                                        {{ m.semester }}
+                                    </td>
+
+                                    <td>
+
+                                        <form
+                                            action="{{ url_for('hapus', nim=m.nim) }}"
+                                            method="post">
+
+                                            <button
+                                                class="btn-danger"
+                                                type="submit"
+                                                onclick="return confirm('Hapus data ini?')">
+                                                Hapus
+                                            </button>
+
+                                        </form>
+
+                                    </td>
+
+                                </tr>
+
+                                {% else %}
+
+                                <tr>
+
+                                    <td
+                                        colspan="6"
+                                        class="empty">
+                                        Belum ada data.
+                                    </td>
+
+                                </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </main>
+
+        </div>
+    </body>
+</html>

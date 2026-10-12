@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Data Perpustakaan</title>
+        <link rel="stylesheet"
+            href="{{ url_for('static', filename='style.css') }}">
+    </head>
+
+    <body>
+        <div class="container">
+            <header class="header">
+                <div>
+                    <h1>Sistem Informasi Perpustakaan</h1>
+                    <p class="subtitle">
+                        Pengelolaan Data Buku berbasis Object-Oriented
+                    </p>
+                </div>
+            </header>
+
+            <main class="grid">
+                <!-- GUI: Form Tambah Data -->
+                <section class="card">
+                    <h2>Tambah Buku Baru</h2>
+                    <p class="help">Form ini akan membuat object Buku baru ke
+                        dalam list koleksi.</p>
+
+                    {% if pesan %}
+                    <div class="alert" style="color: red; margin-bottom: 10px;">
+                        {{ pesan }}
+                    </div>
+                    {% endif %}
+
+                    <form method="post" class="form">
+                        <label for="kode_buku">Kode Buku</label>
+                        <input id="kode_buku" name="kode_buku" type="text"
+                            placeholder="Contoh: B001" required>
+
+                        <label for="judul">Judul Buku</label>
+                        <input id="judul" name="judul" type="text"
+                            placeholder="Masukkan judul buku" required>
+
+                        <label for="penulis">Penulis</label>
+                        <input id="penulis" name="penulis" type="text"
+                            placeholder="Nama penulis" required>
+
+                        <label for="penerbit">Penerbit</label>
+                        <input id="penerbit" name="penerbit" type="text"
+                            placeholder="Nama penerbit" required>
+
+                        <label for="tahun">Tahun Terbit</label>
+                        <input id="tahun" name="tahun" type="number"
+                            placeholder="Contoh: 2024" required>
+
+                        <button type="submit">Simpan Data Buku</button>
+                    </form>
+                </section>
+
+                <!-- GUI: Tabel Data -->
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h2>Koleksi Buku</h2>
+                            <p class="help">Daftar buku yang tersedia di
+                                perpustakaan.</p>
+                        </div>
+                        <span class="badge">{{ koleksi_buku|length }}
+                            Buku</span>
+                    </div>
+
+                    <form action="{{ url_for('reset') }}" method="post"
+                        style="margin-bottom: 15px;">
+                        <button type="submit"
+                            onclick="return confirm('Reset ke data default?')">
+                            Reset Aplikasi
+                        </button>
+                    </form>
+
+                    <div class="table-wrap">
+                        <table border="1"
+                            style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kode</th>
+                                    <th>Judul</th>
+                                    <th>Penulis</th>
+                                    <th>Penerbit</th>
+                                    <th>Tahun</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for b in koleksi_buku %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ b.kode_buku }}</td>
+                                    <td>{{ b.judul }}</td>
+                                    <td>{{ b.penulis }}</td>
+                                    <td>{{ b.penerbit }}</td>
+                                    <td>{{ b.tahun }}</td>
+                                    <td>
+                                        <form
+                                            action="{{ url_for('hapus', kode_buku=b.kode_buku) }}"
+                                            method="post">
+                                            <button class="btn-danger"
+                                                type="submit"
+                                                onclick="return confirm('Hapus buku {{ b.judul }}?')">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="7" class="empty"
+                                        style="text-align: center;">Belum ada
+                                        data buku.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </body>
+</html>
