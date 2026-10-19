@@ -1,0 +1,51 @@
+<nav class='site-nav' aria-label='Navigasi utama'>
+    <div class='nav-shell'>
+        <a class='nav-brand' href='{{ url_for("dashboard") }}' aria-label='Operator Lab, ke Dashboard'>
+            <span class='brand-mark' aria-hidden='true'>∑</span>
+            <span class='brand-copy'><strong>Operator Lab</strong><small>Praktikum 3</small></span>
+        </a>
+
+        <button class='nav-toggle' type='button' aria-expanded='false' aria-controls='primary-navigation'>
+            <span class='menu-glyph' aria-hidden='true'><i></i><i></i><i></i></span>
+            <span>Menu</span>
+        </button>
+
+        <div class='nav-links' id='primary-navigation'>
+            <a class='nav-link{% if request.endpoint == "dashboard" %} is-current{% endif %}' href='{{ url_for("dashboard") }}'{% if request.endpoint == 'dashboard' %} aria-current='page'{% endif %}>Dashboard</a>
+            <a class='nav-link{% if request.endpoint == "kalkulator" %} is-current{% endif %}' href='{{ url_for("kalkulator") }}'{% if request.endpoint == 'kalkulator' %} aria-current='page'{% endif %}>Kalkulator</a>
+            <a class='nav-link{% if request.endpoint == "lingkaran" %} is-current{% endif %}' href='{{ url_for("lingkaran") }}'{% if request.endpoint == 'lingkaran' %} aria-current='page'{% endif %}>Lingkaran</a>
+            <a class='nav-link{% if request.endpoint == "konversi_waktu" %} is-current{% endif %}' href='{{ url_for("konversi_waktu") }}'{% if request.endpoint == 'konversi_waktu' %} aria-current='page'{% endif %}>Konversi waktu</a>
+            <a class='nav-link{% if request.endpoint == "pecahan_uang" %} is-current{% endif %}' href='{{ url_for("pecahan_uang") }}'{% if request.endpoint == 'pecahan_uang' %} aria-current='page'{% endif %}>Pecahan rupiah</a>
+            <a class='nav-link{% if request.endpoint == "kasir" %} is-current{% endif %}' href='{{ url_for("kasir") }}'{% if request.endpoint == 'kasir' %} aria-current='page'{% endif %}>Kasir mini</a>
+            <a class='nav-link{% if request.endpoint == "nilai" %} is-current{% endif %}' href='{{ url_for("nilai") }}'{% if request.endpoint == 'nilai' %} aria-current='page'{% endif %}>Nilai akademik</a>
+        </div>
+    </div>
+</nav>
+
+<script>
+    const menuButton = document.querySelector('.nav-toggle');
+    const menuLinks = document.getElementById('primary-navigation');
+
+    function closeNavigation() {
+        menuButton.setAttribute('aria-expanded', 'false');
+        menuLinks.classList.remove('is-open');
+    }
+
+    menuButton.addEventListener('click', () => {
+        const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
+        menuButton.setAttribute('aria-expanded', String(!isOpen));
+        menuLinks.classList.toggle('is-open', !isOpen);
+    });
+
+    menuLinks.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', closeNavigation);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeNavigation();
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.site-nav')) closeNavigation();
+    });
+</script>

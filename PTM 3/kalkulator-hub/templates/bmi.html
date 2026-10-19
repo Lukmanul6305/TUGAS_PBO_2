@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Kalkulator BMI — Kalkulator Hub{% endblock %}
+
+{% block content %}
+<section class='page-intro'>
+    <span class='eyebrow'>INDEKS MASSA TUBUH</span>
+    <h1>Kenali angka BMI-mu</h1>
+    <p>Masukkan berat dan tinggi untuk menghitung indeks massa tubuh serta rentang berat berdasarkan BMI 18,5–24,9.</p>
+</section>
+
+<div class='content-grid bmi-layout'>
+    <section class='panel'>
+        <div class='panel-heading'>
+            <div><span class='panel-kicker'>DATA TUBUH</span><h2>Masukkan ukuran</h2></div>
+            <span class='panel-symbol' aria-hidden='true'>⌁</span>
+        </div>
+        <form method='post' class='form-stack'>
+            <label class='field'>
+                <span>Berat badan (kg)</span>
+                <input type='number' name='berat' min='0.1' step='any' value='{{ form.berat }}' placeholder='Contoh: 68' required>
+            </label>
+            <label class='field'>
+                <span>Tinggi badan (cm)</span>
+                <input type='number' name='tinggi' min='1' step='any' value='{{ form.tinggi }}' placeholder='Contoh: 170' required>
+            </label>
+            {% if error %}<p class='alert alert-error' role='alert'>{{ error }}</p>{% endif %}
+            <button class='button button-primary' type='submit'>Hitung BMI <span aria-hidden='true'>→</span></button>
+        </form>
+    </section>
+
+    <aside class='explain-card'>
+        <span class='explain-icon' aria-hidden='true'>÷</span>
+        <span class='panel-kicker'>RUMUS BMI</span>
+        <strong>berat ÷ tinggi²</strong>
+        <p>Berat dihitung dalam kilogram dan tinggi dalam meter. Kategori yang ditampilkan memakai rentang BMI dewasa.</p>
+    </aside>
+</div>
+
+{% if hasil %}
+<section class='bmi-result' aria-live='polite'>
+    <div class='bmi-score-card'>
+        <span class='eyebrow'>HASIL BMI</span>
+        <strong>{{ hasil.indeks|angka_id }}</strong>
+        <span class='category-pill'>{{ hasil.kategori }}</span>
+    </div>
+    <div class='ideal-card'>
+        <span class='panel-kicker'>RENTANG BERAT IDEAL</span>
+        <h2>{{ hasil.berat_min|angka_id }}–{{ hasil.berat_max|angka_id }} <small>kg</small></h2>
+        <p>Rentang ini dihitung dari BMI 18,5 sampai 24,9 pada tinggi yang dimasukkan.</p>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

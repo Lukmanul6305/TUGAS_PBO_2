@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Kalkulator Operator — Kalkulator Hub{% endblock %}
+
+{% block content %}
+<section class='page-intro'>
+    <span class='eyebrow'>ALAT HITUNG</span>
+    <h1>Kalkulator operator</h1>
+    <p>Gunakan tujuh operator dasar dan simpan perhitungan terbaru di riwayat.</p>
+</section>
+
+<div class='content-grid calculator-layout'>
+    <section class='panel'>
+        <div class='panel-heading'>
+            <div><span class='panel-kicker'>PERHITUNGAN BARU</span><h2>Masukkan angka</h2></div>
+            <span class='panel-symbol' aria-hidden='true'>∑</span>
+        </div>
+        <form method='post' class='form-stack'>
+            <div class='field-grid calculator-fields'>
+                <label class='field'>
+                    <span>Angka pertama</span>
+                    <input type='number' name='angka_a' step='any' value='{{ form.angka_a }}' placeholder='Contoh: 24' required>
+                </label>
+                <label class='field'>
+                    <span>Operator</span>
+                    <select name='operator'>
+                        {% for symbol, item in operators.items() %}
+                        <option value='{{ symbol }}' {% if form.operator == symbol %}selected{% endif %}>{{ symbol }} · {{ item[0] }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label class='field'>
+                    <span>Angka kedua</span>
+                    <input type='number' name='angka_b' step='any' value='{{ form.angka_b }}' placeholder='Contoh: 6' required>
+                </label>
+            </div>
+            {% if error %}<p class='alert alert-error' role='alert'>{{ error }}</p>{% endif %}
+            <button class='button button-primary' type='submit'>Hitung sekarang <span aria-hidden='true'>→</span></button>
+        </form>
+
+        {% if hasil is not none %}
+        <div class='answer-card' aria-live='polite'>
+            <span>HASIL PERHITUNGAN</span>
+            <strong>{{ hasil }}</strong>
+            <small>{{ form.angka_a }} {{ form.operator }} {{ form.angka_b }}</small>
+        </div>
+        {% endif %}
+
+        <div class='operator-legend'>
+            <span>+ tambah</span><span>− kurang</span><span>× kali</span><span>÷ bagi</span>
+            <span>// bagi bulat</span><span>% sisa bagi</span><span>** pangkat</span>
+        </div>
+    </section>
+
+    <aside class='panel history-panel'>
+        <div class='panel-heading'>
+            <div><span class='panel-kicker'>TERSIMPAN DI SESI INI</span><h2>Riwayat</h2></div>
+            <span class='history-count'>{{ riwayat|length }}</span>
+        </div>
+        {% if riwayat %}
+        <ol class='history-list'>
+            {% for item in riwayat %}
+            <li><span>{{ item.ekspresi }}</span><strong>{{ item.hasil }}</strong></li>
+            {% endfor %}
+        </ol>
+        <form method='post' class='history-clear'>
+            <input type='hidden' name='action' value='clear_history'>
+            <button class='button button-quiet' type='submit'>Hapus riwayat</button>
+        </form>
+        {% else %}
+        <div class='empty-state'>
+            <span aria-hidden='true'>↗</span>
+            <p>Hasil hitunganmu akan muncul di sini.</p>
+        </div>
+        {% endif %}
+        <p class='panel-footnote'>Riwayat menyimpan maksimal 10 hasil terbaru di browser ini.</p>
+    </aside>
+</div>
+{% endblock %}

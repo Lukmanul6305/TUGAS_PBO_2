@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Konversi Suhu — Kalkulator Hub{% endblock %}
+
+{% block content %}
+<section class='page-intro'>
+    <span class='eyebrow'>KONVERSI SUHU</span>
+    <h1>Ubah satuan suhu</h1>
+    <p>Konversi nilai antara Celsius, Fahrenheit, dan Kelvin. Suhu di bawah nol mutlak tidak diterima.</p>
+</section>
+
+<section class='panel form-panel temperature-panel'>
+    <div class='panel-heading'>
+        <div><span class='panel-kicker'>NILAI SUHU</span><h2>Pilih satuan awal dan tujuan</h2></div>
+        <span class='panel-symbol' aria-hidden='true'>°</span>
+    </div>
+    <form method='post' class='form-stack'>
+        <div class='field-grid temperature-fields'>
+            <label class='field'>
+                <span>Suhu</span>
+                <input type='number' name='nilai' step='any' value='{{ form.nilai }}' placeholder='Contoh: 25' required>
+            </label>
+            <label class='field'>
+                <span>Dari</span>
+                <select name='dari'>
+                    {% for code, name in units.items() %}
+                    <option value='{{ code }}' {% if form.dari == code %}selected{% endif %}>{{ name }} ({{ code }})</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label class='field'>
+                <span>Ke</span>
+                <select name='ke'>
+                    {% for code, name in units.items() %}
+                    <option value='{{ code }}' {% if form.ke == code %}selected{% endif %}>{{ name }} ({{ code }})</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+        {% if error %}<p class='alert alert-error' role='alert'>{{ error }}</p>{% endif %}
+        <button class='button button-primary' type='submit'>Konversi suhu <span aria-hidden='true'>→</span></button>
+    </form>
+</section>
+
+{% if hasil %}
+<section class='temperature-result' aria-live='polite'>
+    <div class='temperature-answer'>
+        <span>{{ hasil.nama_dari }} ke {{ hasil.nama_ke }}</span>
+        <strong>{{ hasil.nilai|angka_id }} <small>°{{ form.ke }}</small></strong>
+    </div>
+    <div class='temperature-equivalents'>
+        <span class='panel-kicker'>NILAI DALAM TIGA SKALA</span>
+        <div class='equivalent-grid'>
+            <div><span>Celsius</span><strong>{{ hasil.semua.C|angka_id }} °C</strong></div>
+            <div><span>Fahrenheit</span><strong>{{ hasil.semua.F|angka_id }} °F</strong></div>
+            <div><span>Kelvin</span><strong>{{ hasil.semua.K|angka_id }} K</strong></div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

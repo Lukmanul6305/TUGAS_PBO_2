@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang='id'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>Kalkulator Operator | Operator Lab</title>
+        <link rel='stylesheet' href='{{ url_for("static", filename="css/style.css") }}'>
+    </head>
+    <body>
+        {% include '_navbar.html' %}
+
+        <main class='page-content calculator-page'>
+        <span class='eyebrow'>PRAKTIKUM OPERATOR</span>
+        <h1>Kalkulator Operator</h1>
+        <p class='intro'>Lakukan perhitungan dengan operator aritmatika Python.</p>
+        <form method='POST'>
+            <input type='number' step='any' name='a' placeholder='Bilangan A'
+                required>
+            <select name='op'>
+                <option value='tambah'>+ Tambah</option>
+                <option value='kurang'>- Kurang</option>
+                <option value='kali'>* Kali</option>
+                <option value='bagi'>/ Bagi</option>
+                <option value='bagi_bulat'>// Bagi bulat</option>
+                <option value='sisa'>% Sisa bagi</option>
+                <option value='pangkat'>** Pangkat</option>
+                <option value='rata_rata'>(a + b) / 2 Rata-rata</option>
+            </select>
+            <input type='number' step='any' name='b' placeholder='Bilangan B'>
+            <button type='submit'>Hitung</button>
+        </form>
+
+        {% if hasil is not none %}
+        <p class='result-message'>Hasil: <strong>{{ hasil }}</strong></p>
+        {% endif %}
+
+        {% if error %}
+        <p class='error-message' role='alert'>{{ error }}</p>
+        {% endif %}
+        </main>
+    </body>
+</html>

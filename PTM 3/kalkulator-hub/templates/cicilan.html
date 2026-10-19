@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Simulasi Cicilan — Kalkulator Hub{% endblock %}
+
+{% block content %}
+<section class='page-intro'>
+    <span class='eyebrow'>SIMULASI PINJAMAN</span>
+    <h1>Rencanakan cicilanmu</h1>
+    <p>Bandingkan perhitungan bunga flat dan anuitas, lalu lihat ringkasan serta jadwal angsurannya.</p>
+</section>
+
+<section class='panel form-panel'>
+    <div class='panel-heading'>
+        <div><span class='panel-kicker'>DETAIL PINJAMAN</span><h2>Data simulasi</h2></div>
+        <span class='panel-symbol' aria-hidden='true'>₨</span>
+    </div>
+    <form method='post' class='form-stack'>
+        <div class='field-grid'>
+            <label class='field'>
+                <span>Pokok pinjaman (Rp)</span>
+                <input type='number' name='pokok' min='1' step='1' value='{{ form.pokok }}' placeholder='Contoh: 50000000' required>
+            </label>
+            <label class='field'>
+                <span>Bunga per tahun (%)</span>
+                <input type='number' name='bunga_tahunan' min='0' max='100' step='any' value='{{ form.bunga_tahunan }}' placeholder='Contoh: 9' required>
+            </label>
+            <label class='field'>
+                <span>Tenor (bulan)</span>
+                <input type='number' name='bulan' min='1' max='600' step='1' value='{{ form.bulan }}' placeholder='Contoh: 24' required>
+            </label>
+            <label class='field'>
+                <span>Metode perhitungan</span>
+                <select name='metode'>
+                    <option value='flat' {% if form.metode == 'flat' %}selected{% endif %}>Bunga flat</option>
+                    <option value='anuitas' {% if form.metode == 'anuitas' %}selected{% endif %}>Bunga anuitas</option>
+                </select>
+            </label>
+        </div>
+        {% if error %}<p class='alert alert-error' role='alert'>{{ error }}</p>{% endif %}
+        <button class='button button-primary' type='submit'>Buat simulasi <span aria-hidden='true'>→</span></button>
+    </form>
+    <p class='panel-footnote'>Flat menghitung bunga dari pokok awal. Anuitas menghitung bunga dari sisa pinjaman setiap bulan.</p>
+</section>
+
+{% if hasil %}
+<section class='results-section' aria-live='polite'>
+    <div class='section-heading result-heading'>
+        <div><span class='eyebrow'>RINGKASAN BIAYA</span><h2>Metode {{ hasil.nama_metode }}</h2></div>
+        <span class='result-chip'>{{ hasil.bulan }} bulan · bunga {{ hasil.bunga_tahunan }}% / tahun</span>
+    </div>
+    <div class='summary-grid'>
+        <article class='summary-card summary-highlight'>
+            <span>Angsuran per bulan</span>
+            <strong>Rp {{ hasil.angsuran_per_bulan|rupiah }}</strong>
+        </article>
+        <article class='summary-card'>
+            <span>Total pokok</span>
+            <strong>Rp {{ hasil.pokok|rupiah }}</strong>
+        </article>
+        <article class='summary-card'>
+            <span>Total bunga</span>
+            <strong>Rp {{ hasil.total_bunga|rupiah }}</strong>
+        </article>
+        <article class='summary-card'>
+            <span>Total pembayaran</span>
+            <strong>Rp {{ hasil.total_bayar|rupiah }}</strong>
+        </article>
+    </div>
+
+    <section class='panel schedule-panel'>
+        <div class='panel-heading'>
+            <div><span class='panel-kicker'>PER BULAN</span><h2>Jadwal angsuran</h2></div>
+            <span class='schedule-count'>{{ hasil.jadwal|length }} baris</span>
+        </div>
+        <div class='table-scroll'>
+            <table class='data-table'>
+                <thead><tr><th>Bulan</th><th>Pokok</th><th>Bunga</th><th>Angsuran</th><th>Sisa pinjaman</th></tr></thead>
+                <tbody>
+                    {% for item in hasil.jadwal %}
+                    <tr>
+                        <td>{{ item.bulan }}</td>
+                        <td>Rp {{ item.pokok|rupiah }}</td>
+                        <td>Rp {{ item.bunga|rupiah }}</td>
+                        <td>Rp {{ item.angsuran|rupiah }}</td>
+                        <td>Rp {{ item.sisa|rupiah }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</section>
+{% endif %}
+{% endblock %}

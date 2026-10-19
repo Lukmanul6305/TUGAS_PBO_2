@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang='id'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Pemisah Pecahan Uang</title>
+    <link rel='stylesheet' href='{{ url_for("static", filename="css/style.css") }}'>
+</head>
+<body>
+    {% include '_navbar.html' %}
+    <main class='page-content cash-page'>
+    <span class='eyebrow'>PECAHAN RUPIAH</span>
+    <h1>Pemisah Pecahan Uang</h1>
+    <p class='intro'>Hitung jumlah lembar Rp100.000, Rp50.000, Rp20.000, dan Rp10.000 beserta sisanya.</p>
+
+    <form method='POST'>
+        <label for='nominal'>Nominal (rupiah):</label>
+        <input id='nominal' type='number' name='nominal' min='0' step='1'
+               value='{{ nominal }}' placeholder='Contoh: 187000' required>
+        <button type='submit'>Hitung Pecahan</button>
+    </form>
+
+    {% if pecahan is not none %}
+    <h2>Hasil untuk Rp {{ '{:,.0f}'.format(nominal|int).replace(',', '.') }}</h2>
+    <ul class='denomination-list'>
+        {% for nilai, lembar in pecahan %}
+        <li><span>{{ lembar }} lembar</span><strong>Rp {{ '{:,.0f}'.format(nilai).replace(',', '.') }}</strong></li>
+        {% endfor %}
+    </ul>
+    <p class='result-message'>Sisa: <strong>Rp {{ '{:,.0f}'.format(sisa).replace(',', '.') }}</strong></p>
+    {% endif %}
+    {% if error %}<p class='error-message' role='alert'>{{ error }}</p>{% endif %}
+    </main>
+</body>
+</html>

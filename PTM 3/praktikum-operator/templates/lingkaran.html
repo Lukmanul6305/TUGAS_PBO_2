@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang='id'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Luas dan Keliling Lingkaran</title>
+    <link rel='stylesheet' href='{{ url_for("static", filename="css/style.css") }}'>
+</head>
+<body>
+    {% include '_navbar.html' %}
+    <main class='page-content circle-page'>
+    <span class='eyebrow'>GEOMETRI</span>
+    <h1>Luas dan Keliling Lingkaran</h1>
+    <p class='intro'>Rumus luas: 3.14159 &times; r ** 2. Rumus keliling: 2 &times; 3.14159 &times; r.</p>
+
+    <form method='POST'>
+        <label for='radius'>Jari-jari:</label>
+        <input id='radius' type='number' name='radius' step='any' min='0'
+               value='{{ radius }}' placeholder='Contoh: 7' required>
+        <button type='submit'>Hitung</button>
+    </form>
+
+    {% if luas is not none %}
+    <h2>Hasil</h2>
+    <div class='result-grid'>
+        <p class='result-card'><span>Luas</span><strong>{{ '%.5f'|format(luas) }}</strong></p>
+        <p class='result-card'><span>Keliling</span><strong>{{ '%.5f'|format(keliling) }}</strong></p>
+    </div>
+    {% endif %}
+    {% if error %}<p class='error-message' role='alert'>{{ error }}</p>{% endif %}
+    </main>
+</body>
+</html>

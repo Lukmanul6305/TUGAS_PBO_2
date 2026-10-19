@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang='id'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Konversi Detik</title>
+    <link rel='stylesheet' href='{{ url_for("static", filename="css/style.css") }}'>
+</head>
+<body>
+    {% include '_navbar.html' %}
+    <main class='page-content time-page'>
+    <span class='eyebrow'>KONVERSI WAKTU</span>
+    <h1>Konversi Detik ke Jam, Menit, dan Detik</h1>
+    <p class='intro'>Contoh: 3725 detik = 1 jam, 2 menit, 5 detik.</p>
+
+    <form method='POST'>
+        <label for='total_detik'>Jumlah detik:</label>
+        <input id='total_detik' type='number' name='total_detik' min='0' step='1'
+               value='{{ total_detik }}' placeholder='Contoh: 3725' required>
+        <button type='submit'>Konversi</button>
+    </form>
+
+    {% if jam is not none %}
+    <h2>Hasil</h2>
+    <p class='result-message'>{{ total_detik }} detik = <strong>{{ jam }} jam, {{ menit }} menit, {{ detik }} detik</strong></p>
+    <p class='supporting-copy'>Perhitungan menggunakan operator <code>//</code> dan <code>%</code>.</p>
+    {% endif %}
+    {% if error %}<p class='error-message' role='alert'>{{ error }}</p>{% endif %}
+    </main>
+</body>
+</html>

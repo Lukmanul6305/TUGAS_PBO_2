@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang='id'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Penilaian Akademik</title>
+    <link rel='stylesheet' href='{{ url_for("static", filename="css/style.css") }}'>
+</head>
+<body>
+    {% include '_navbar.html' %}
+    <main class='page-content academic-page'>
+    <span class='eyebrow'>AKADEMIK</span>
+    <h1>Penilaian Akademik</h1>
+    <p class='intro'>Bobot: kehadiran 10%, tugas 30%, UTS 30%, dan UAS 30%. Nilai setiap komponen harus 0 sampai 100.</p>
+    <p class='supporting-copy'>Grade: A mulai 85, B mulai 70, C mulai 55, D mulai 40, dan E di bawah 40. Lulus jika nilai akhir minimal 55 dan nilai UAS minimal 40.</p>
+    <p class='supporting-copy'>Contoh dengan bobot ini: kehadiran 60, tugas 80, UTS 70, UAS 60 menghasilkan nilai akhir 69 (C, lulus). Kehadiran 30, tugas 90, UTS 80, UAS 30 menghasilkan 63 (C, tidak lulus karena syarat UAS).</p>
+
+    <form method='POST'>
+        <div id='daftar-mahasiswa'>
+            {% for row in form_rows %}
+            <fieldset class='mahasiswa'>
+                <legend>Mahasiswa {{ loop.index }}</legend>
+                <p>
+                    <label for='nama-{{ loop.index }}'>Nama (opsional):</label>
+                    <input id='nama-{{ loop.index }}' type='text' name='nama'
+                           value='{{ row.nama }}' placeholder='Mahasiswa {{ loop.index }}'>
+                </p>
+                <p>
+                    <label for='kehadiran-{{ loop.index }}'>Kehadiran:</label>
+                    <input id='kehadiran-{{ loop.index }}' type='number' name='kehadiran'
+                           min='0' max='100' step='any' value='{{ row.kehadiran }}' required>
+                </p>
+                <p>
+                    <label for='tugas-{{ loop.index }}'>Tugas:</label>
+                    <input id='tugas-{{ loop.index }}' type='number' name='tugas'
+                           min='0' max='100' step='any' value='{{ row.tugas }}' required>
+                </p>
+                <p>
+                    <label for='uts-{{ loop.index }}'>UTS:</label>
+                    <input id='uts-{{ loop.index }}' type='number' name='uts'
+                           min='0' max='100' step='any' value='{{ row.uts }}' required>
+                </p>
+                <p>
+                    <label for='uas-{{ loop.index }}'>UAS:</label>
+                    <input id='uas-{{ loop.index }}' type='number' name='uas'
+                           min='0' max='100' step='any' value='{{ row.uas }}' required>
+                </p>
+                <button type='button' class='hapus-mahasiswa'>Hapus mahasiswa ini</button>
+            </fieldset>
+            {% endfor %}
+        </div>
+        <p>
+            <button type='button' id='tambah-mahasiswa'>Tambah mahasiswa</button>
+            <button type='submit'>Hitung nilai</button>
+        </p>
+    </form>
+
+    {% if error %}<p class='error-message' role='alert'>{{ error }}</p>{% endif %}
+
+    {% if hasil %}
+    <h2>Hasil Penilaian</h2>
+    <div class='table-wrap'>
+    <table class='results-table'>
+        <thead>
+            <tr>
+                <th>Mahasiswa</th><th>Kehadiran</th><th>Tugas</th><th>UTS</th>
+                <th>UAS</th><th>Nilai akhir</th><th>Grade</th><th>Status</th><th>Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mahasiswa in hasil %}
+            <tr>
+                <td>{{ mahasiswa.nama }}</td>
+                <td>{{ '-' if mahasiswa.kehadiran is none else mahasiswa.kehadiran }}</td>
+                <td>{{ mahasiswa.tugas }}</td>
+                <td>{{ mahasiswa.uts }}</td>
+                <td>{{ mahasiswa.uas }}</td>
+                <td>{{ mahasiswa.akhir }}</td>
+                <td>{{ mahasiswa.grade }}</td>
+                <td>{{ 'Lulus' if mahasiswa.lulus else 'Tidak lulus' }}</td>
+                <td>{{ mahasiswa.pesan }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <p class='result-message'><strong>Rata-rata kelas: {{ rata_rata_kelas }}</strong></p>
+    {% endif %}
+
+    <script>
+        const daftarMahasiswa = document.getElementById('daftar-mahasiswa');
+        const tombolTambah = document.getElementById('tambah-mahasiswa');
+
+        function aturTombolHapus() {
+            const tombolHapus = daftarMahasiswa.querySelectorAll('.hapus-mahasiswa');
+            tombolHapus.forEach((tombol) => {
+                tombol.disabled = tombolHapus.length === 1;
+            });
+        }
+
+        tombolTambah.addEventListener('click', () => {
+            const nomor = daftarMahasiswa.querySelectorAll('.mahasiswa').length + 1;
+            const baris = document.createElement('fieldset');
+            baris.className = 'mahasiswa';
+            baris.innerHTML = `
+                <legend>Mahasiswa ${nomor}</legend>
+                <p><label for='nama-${nomor}'>Nama (opsional):</label>
+                   <input id='nama-${nomor}' type='text' name='nama' placeholder='Mahasiswa ${nomor}'></p>
+                <p><label for='kehadiran-${nomor}'>Kehadiran:</label>
+                   <input id='kehadiran-${nomor}' type='number' name='kehadiran' min='0' max='100' step='any' required></p>
+                <p><label for='tugas-${nomor}'>Tugas:</label>
+                   <input id='tugas-${nomor}' type='number' name='tugas' min='0' max='100' step='any' required></p>
+                <p><label for='uts-${nomor}'>UTS:</label>
+                   <input id='uts-${nomor}' type='number' name='uts' min='0' max='100' step='any' required></p>
+                <p><label for='uas-${nomor}'>UAS:</label>
+                   <input id='uas-${nomor}' type='number' name='uas' min='0' max='100' step='any' required></p>
+                <button type='button' class='hapus-mahasiswa'>Hapus mahasiswa ini</button>
+            `;
+            daftarMahasiswa.appendChild(baris);
+            aturTombolHapus();
+        });
+
+        daftarMahasiswa.addEventListener('click', (event) => {
+            if (event.target.classList.contains('hapus-mahasiswa')) {
+                event.target.closest('.mahasiswa').remove();
+                aturTombolHapus();
+            }
+        });
+
+        aturTombolHapus();
+    </script>
+    </main>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang='id'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Kasir Mini</title>
+    <link rel='stylesheet' href='{{ url_for("static", filename="css/style.css") }}'>
+</head>
+<body>
+    {% include '_navbar.html' %}
+    <main class='page-content cash-page'>
+    <span class='eyebrow'>TOKO / KASIR</span>
+    <h1>Kasir Mini</h1>
+    <p class='intro'>Diskon 5% untuk subtotal minimal Rp 50.000, atau 10% untuk subtotal minimal Rp 100.000. Setelah diskon, dikenakan PPN 11%.</p>
+
+    <form method='POST'>
+        <p>
+            <label for='harga'>Harga satuan (rupiah):</label>
+            <input id='harga' type='number' name='harga' min='1' step='1'
+                   value='{{ form.harga }}' required>
+        </p>
+        <p>
+            <label for='jumlah'>Jumlah barang:</label>
+            <input id='jumlah' type='number' name='jumlah' min='1' step='1'
+                   value='{{ form.jumlah }}' required>
+        </p>
+        <p>
+            <label for='bayar'>Uang bayar (rupiah):</label>
+            <input id='bayar' type='number' name='bayar' min='0' step='1'
+                   value='{{ form.bayar }}' required>
+        </p>
+        <button type='submit'>Hitung Total</button>
+    </form>
+
+    {% if error %}<p class='error-message' role='alert'>{{ error }}</p>{% endif %}
+
+    {% if nota %}
+    <h2>Nota</h2>
+    <table class='receipt-table'>
+        <tr><td>Subtotal</td><td>Rp {{ nota.subtotal|rupiah }}</td></tr>
+        <tr><td>Diskon</td><td>Rp {{ nota.diskon|rupiah }}</td></tr>
+        <tr><td>PPN 11%</td><td>Rp {{ nota.ppn|rupiah }}</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>Rp {{ nota.total|rupiah }}</strong></td></tr>
+        <tr><td>Kembalian</td><td>Rp {{ nota.kembalian|rupiah }}</td></tr>
+    </table>
+    {% if not nota.cukup %}
+    <p class='error-message' role='alert'>Uang bayar kurang!</p>
+    {% endif %}
+    {% endif %}
+    </main>
+</body>
+</html>

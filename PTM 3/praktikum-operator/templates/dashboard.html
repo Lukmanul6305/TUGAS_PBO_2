@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang='id'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <meta name='theme-color' content='#f3f6fb'>
+        <title>Dashboard | Operator Lab</title>
+        <link rel='stylesheet' href='{{ url_for("static", filename="css/style.css") }}'>
+    </head>
+    <body>
+        {% include '_navbar.html' %}
+
+        <main class='page-content dashboard-page'>
+            <section class='dashboard-hero' aria-labelledby='dashboard-title'>
+                <div class='dashboard-hero-copy'>
+                    <span class='eyebrow'>PRAKTIKUM OPERATOR · PUSAT AKTIVITAS</span>
+                    <h1 id='dashboard-title'>Selamat datang di Operator Lab</h1>
+                    <p>Ringkasan seluruh tugas dan alat hitung praktikum. Pilih modul untuk mulai bekerja.</p>
+                    <a class='hero-action' href='{{ url_for("kalkulator") }}'>Mulai dari kalkulator <span aria-hidden='true'>→</span></a>
+                </div>
+                <div class='dashboard-summary' aria-label='Ringkasan modul'>
+                    <span class='summary-icon' aria-hidden='true'>∑</span>
+                    <strong>06</strong>
+                    <span>modul praktikum</span>
+                </div>
+            </section>
+
+            <section class='dashboard-modules' aria-labelledby='modules-title'>
+                <div class='section-heading'>
+                    <div>
+                        <span class='eyebrow'>PILIH MODUL</span>
+                        <h2 id='modules-title'>Semua fitur</h2>
+                    </div>
+                    <p>Enam tugas tersedia dalam satu dashboard.</p>
+                </div>
+
+                <div class='module-grid'>
+                    <a class='module-card' href='{{ url_for("kalkulator") }}'>
+                        <span class='module-icon icon-blue' aria-hidden='true'>＋</span>
+                        <span class='module-number'>01 · OPERATOR DASAR</span>
+                        <strong>Kalkulator operator</strong>
+                        <span class='module-description'>Hitung tambah, kurang, kali, bagi, bagi bulat, sisa, dan pangkat.</span>
+                        <span class='module-footer'>Buka kalkulator <span aria-hidden='true'>→</span></span>
+                    </a>
+
+                    <a class='module-card' href='{{ url_for("lingkaran") }}'>
+                        <span class='module-icon icon-violet' aria-hidden='true'>◉</span>
+                        <span class='module-number'>02 · GEOMETRI</span>
+                        <strong>Luas &amp; keliling lingkaran</strong>
+                        <span class='module-description'>Cari luas dan keliling lingkaran dari nilai jari-jari.</span>
+                        <span class='module-footer'>Buka kalkulator lingkaran <span aria-hidden='true'>→</span></span>
+                    </a>
+
+                    <a class='module-card' href='{{ url_for("konversi_waktu") }}'>
+                        <span class='module-icon icon-green' aria-hidden='true'>◷</span>
+                        <span class='module-number'>03 · KONVERSI</span>
+                        <strong>Konversi waktu</strong>
+                        <span class='module-description'>Ubah total detik menjadi jam, menit, dan detik.</span>
+                        <span class='module-footer'>Buka konversi waktu <span aria-hidden='true'>→</span></span>
+                    </a>
+
+                    <a class='module-card' href='{{ url_for("pecahan_uang") }}'>
+                        <span class='module-icon icon-amber' aria-hidden='true'>Rp</span>
+                        <span class='module-number'>04 · UANG</span>
+                        <strong>Pemisah pecahan uang</strong>
+                        <span class='module-description'>Rincikan nominal ke lembar Rp100.000, Rp50.000, Rp20.000, dan Rp10.000.</span>
+                        <span class='module-footer'>Buka pemisah uang <span aria-hidden='true'>→</span></span>
+                    </a>
+
+                    <a class='module-card' href='{{ url_for("kasir") }}'>
+                        <span class='module-icon icon-rose' aria-hidden='true'>▤</span>
+                        <span class='module-number'>05 · TRANSAKSI</span>
+                        <strong>Kasir mini</strong>
+                        <span class='module-description'>Hitung subtotal, diskon, PPN, total belanja, dan kembalian.</span>
+                        <span class='module-footer'>Buka kasir mini <span aria-hidden='true'>→</span></span>
+                    </a>
+
+                    <a class='module-card' href='{{ url_for("nilai") }}'>
+                        <span class='module-icon icon-teal' aria-hidden='true'>✓</span>
+                        <span class='module-number'>06 · AKADEMIK</span>
+                        <strong>Nilai akademik</strong>
+                        <span class='module-description'>Rekap nilai mahasiswa, nilai akhir, grade, kelulusan, dan rata-rata kelas.</span>
+                        <span class='module-footer'>Buka penilaian <span aria-hidden='true'>→</span></span>
+                    </a>
+                </div>
+            </section>
+
+            <footer class='dashboard-note'>
+                <span class='note-mark' aria-hidden='true'>i</span>
+                <p>Setiap modul dilengkapi validasi agar perhitungan lebih mudah dan hasilnya jelas.</p>
+            </footer>
+        </main>
+    </body>
+</html>

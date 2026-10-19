@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Kalkulator Hub — Beranda{% endblock %}
+
+{% block content %}
+<section class='hero'>
+    <div class='hero-copy'>
+        <span class='eyebrow'>ALAT HITUNG HARIAN</span>
+        <h1>Hitung dengan lebih <span>mudah.</span></h1>
+        <p>Satu tempat untuk perhitungan dasar, simulasi cicilan, indeks massa tubuh, dan konversi suhu.</p>
+        <a class='button button-primary' href='{{ url_for("kalkulator") }}'>Buka kalkulator <span aria-hidden='true'>→</span></a>
+    </div>
+    <div class='hero-art' aria-hidden='true'>
+        <div class='art-orbit orbit-one'></div>
+        <div class='art-orbit orbit-two'></div>
+        <div class='art-card'>
+            <span class='art-card-label'>HASIL CEPAT</span>
+            <strong>2.450 <small>×</small> 18</strong>
+            <span class='art-rule'></span>
+            <b>44.100</b>
+            <span class='art-check'>✓</span>
+        </div>
+        <span class='art-dot dot-one'></span>
+        <span class='art-dot dot-two'></span>
+        <span class='art-plus'>+</span>
+    </div>
+</section>
+
+<section class='tools-section'>
+    <div class='section-heading'>
+        <div>
+            <span class='eyebrow'>PILIH ALAT</span>
+            <h2>Apa yang ingin dihitung?</h2>
+        </div>
+        <p>Semua alat siap digunakan tanpa langkah yang rumit.</p>
+    </div>
+
+    <div class='tool-grid'>
+        <a class='tool-card' href='{{ url_for("kalkulator") }}'>
+            <span class='tool-icon icon-violet'>±</span>
+            <span class='tool-card-content'>
+                <strong>Kalkulator</strong>
+                <span>Operasi hitung dasar dan riwayat perhitungan.</span>
+            </span>
+            <span class='card-arrow' aria-hidden='true'>↗</span>
+        </a>
+        <a class='tool-card' href='{{ url_for("cicilan") }}'>
+            <span class='tool-icon icon-green'>₨</span>
+            <span class='tool-card-content'>
+                <strong>Simulasi cicilan</strong>
+                <span>Bandingkan bunga flat dan anuitas.</span>
+            </span>
+            <span class='card-arrow' aria-hidden='true'>↗</span>
+        </a>
+        <a class='tool-card' href='{{ url_for("bmi") }}'>
+            <span class='tool-icon icon-orange'>⌁</span>
+            <span class='tool-card-content'>
+                <strong>Kalkulator BMI</strong>
+                <span>Lihat indeks massa tubuh dan rentang berat ideal.</span>
+            </span>
+            <span class='card-arrow' aria-hidden='true'>↗</span>
+        </a>
+        <a class='tool-card' href='{{ url_for("suhu") }}'>
+            <span class='tool-icon icon-blue'>°</span>
+            <span class='tool-card-content'>
+                <strong>Konversi suhu</strong>
+                <span>Ubah Celsius, Fahrenheit, dan Kelvin.</span>
+            </span>
+            <span class='card-arrow' aria-hidden='true'>↗</span>
+        </a>
+    </div>
+</section>
+
+<section class='learning-note'>
+    <span class='note-icon' aria-hidden='true'>✦</span>
+    <div>
+        <strong>Dirancang untuk belajar</strong>
+        <p>Setiap halaman memisahkan rumus di Python dari tampilan HTML agar alur perhitungannya mudah dipahami.</p>
+    </div>
+</section>
+{% endblock %}
