@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard Praktikum TI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-icon">P</span><span>Praktikum<span class="brand-light">TI</span></span></div>
+      <div class="side-label">MENU UTAMA</div>
+      <a class="nav active" href="#ringkasan">▦ <span>Ringkasan</span></a>
+      <a class="nav" href="#grafik">◫ <span>Visualisasi</span></a>
+      <a class="nav" href="#data">▤ <span>Data bulanan</span></a>
+      <div class="side-foot">Python + Flask<br>Contoh data simulasi</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar"><span>Dashboard / Ringkasan</span><span class="avatar">TI</span></header>
+      <div class="content">
+        <div class="intro" id="ringkasan">
+          <div><p class="eyebrow">ANALISIS PRAKTIKUM</p><h1>Ringkasan Aktivitas</h1>
+            <p class="muted">Pantau kehadiran dan ketuntasan latihan dari Januari sampai Juni.</p></div>
+          <span class="badge">● Data simulasi</span>
+        </div>
+
+        <section class="metrics" aria-label="Kartu ringkasan">
+          <article class="metric"><span class="metric-icon violet">↗</span><p>Total kehadiran</p>
+            <strong>{{ total_hadir }}</strong><small>Akumulasi 6 bulan, bukan mahasiswa unik</small></article>
+          <article class="metric"><span class="metric-icon teal">✓</span><p>Latihan tuntas</p>
+            <strong>{{ total_tuntas }}</strong><small>Akumulasi 6 bulan</small></article>
+          <article class="metric"><span class="metric-icon amber">%</span><p>Tingkat ketuntasan</p>
+            <strong>{{ "%.1f"|format(tingkat_total) }}%</strong><small>Tuntas ÷ hadir × 100</small></article>
+          <article class="metric"><span class="metric-icon blue">◷</span><p>Kehadiran bulan terakhir</p>
+            <strong>{{ terakhir.hadir }}</strong><small>{{ terakhir.bulan }} • {{ terakhir.tuntas }} tuntas</small></article>
+        </section>
+
+        <section id="grafik" class="charts" aria-label="Tiga grafik dashboard">
+          <article class="panel"><div class="panel-head"><div><h2>Kehadiran per bulan</h2><p>Perbandingan jumlah peserta tiap bulan</p></div><span class="tag">Batang</span></div>
+            <img src="data:image/png;base64,{{ grafik.batang }}" alt="Grafik batang kehadiran Januari sampai Juni"></article>
+          <article class="panel"><div class="panel-head"><div><h2>Tren ketuntasan</h2><p>Persentase latihan tuntas dari peserta hadir</p></div><span class="tag">Garis</span></div>
+            <img src="data:image/png;base64,{{ grafik.garis }}" alt="Grafik garis tingkat ketuntasan tiap bulan"></article>
+          <article class="panel pie-panel"><div class="panel-head"><div><h2>Komposisi {{ terakhir.bulan }}</h2><p>Tuntas dibanding belum tuntas</p></div><span class="tag">Donat</span></div>
+            <img src="data:image/png;base64,{{ grafik.donat }}" alt="Grafik donat komposisi ketuntasan bulan terakhir">
+            <div class="legend"><span><i class="dot done"></i>Tuntas {{ terakhir.tuntas }}</span><span><i class="dot pending"></i>Belum {{ belum }}</span></div></article>
+        </section>
+
+        <section id="data" class="panel data-panel"><div class="panel-head"><div><h2>Data sumber</h2><p>Semua visualisasi dihitung dari tabel yang sama</p></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Bulan</th><th>Hadir</th><th>Tuntas</th><th>Belum tuntas</th><th>Tingkat ketuntasan</th></tr></thead>
+          <tbody>{% for item in data %}<tr><td>{{ item.bulan }}</td><td>{{ item.hadir }}</td><td>{{ item.tuntas }}</td>
+            <td>{{ item.hadir - item.tuntas }}</td><td>{{ "%.1f"|format(item.tuntas / item.hadir * 100) }}%</td></tr>{% endfor %}</tbody></table></div>
+        </section>
+        <footer>Modul praktikum visualisasi data • STIKOM Poltek Cirebon • Data contoh</footer>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
