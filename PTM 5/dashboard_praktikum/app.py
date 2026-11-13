@@ -19,7 +19,20 @@ DATA = [
     {"bulan": "Apr", "hadir": 155, "tuntas": 121},
     {"bulan": "Mei", "hadir": 168, "tuntas": 138},
     {"bulan": "Jun", "hadir": 182, "tuntas": 157},
+    # Data tambahan buatan sendiri (SIMULASI): hadir > 0 dan 0 <= tuntas <= hadir.
+    {"bulan": "Jul", "hadir": 190, "tuntas": 171},
+    {"bulan": "Agu", "hadir": 176, "tuntas": 149},
 ]
+
+
+def validasi_data(data):
+    """Pastikan hadir > 0 dan 0 <= tuntas <= hadir pada setiap bulan."""
+    for item in data:
+        assert item["hadir"] > 0, f"hadir {item['bulan']} harus > 0"
+        assert 0 <= item["tuntas"] <= item["hadir"], f"tuntas {item['bulan']} tidak valid"
+
+
+validasi_data(DATA)
 
 
 def gambar_base64(fig):
@@ -38,7 +51,7 @@ def siapkan_grafik():
     # Grafik 1: batang untuk membandingkan jumlah kehadiran tiap bulan.
     fig1 = Figure(figsize=(7, 3.4), facecolor="white")
     ax1 = fig1.subplots()
-    batang = ax1.bar(bulan, hadir, color="#4f46e5", width=0.58)
+    batang = ax1.bar(bulan, hadir, color="#ea580c", width=0.58)
     ax1.bar_label(batang, padding=4, fontsize=9, color="#334155")
     ax1.set_ylim(0, max(hadir) * 1.2)
     ax1.set_ylabel("Kehadiran")
@@ -85,12 +98,15 @@ def dashboard():
     total_hadir = sum(item["hadir"] for item in DATA)
     total_tuntas = sum(item["tuntas"] for item in DATA)
     terakhir = DATA[-1]
+    rata_hadir = total_hadir / len(DATA)  # rata-rata kehadiran per bulan
     return render_template(
         "index.html",
         grafik=siapkan_grafik(),
         data=DATA,
         total_hadir=total_hadir,
         total_tuntas=total_tuntas,
+        rata_hadir=rata_hadir,
+        jumlah_bulan=len(DATA),
         tingkat_total=total_tuntas / total_hadir * 100,
         terakhir=terakhir,
         belum=terakhir["hadir"] - terakhir["tuntas"],

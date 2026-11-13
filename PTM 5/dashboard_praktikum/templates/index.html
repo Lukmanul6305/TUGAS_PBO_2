@@ -22,24 +22,26 @@
       <div class="content">
         <div class="intro" id="ringkasan">
           <div><p class="eyebrow">ANALISIS PRAKTIKUM</p><h1>Ringkasan Aktivitas</h1>
-            <p class="muted">Pantau kehadiran dan ketuntasan latihan dari Januari sampai Juni.</p></div>
+            <p class="muted">Pantau kehadiran dan ketuntasan latihan dari Januari sampai Agustus.</p></div>
           <span class="badge">● Data simulasi</span>
         </div>
 
         <section class="metrics" aria-label="Kartu ringkasan">
           <article class="metric"><span class="metric-icon violet">↗</span><p>Total kehadiran</p>
-            <strong>{{ total_hadir }}</strong><small>Akumulasi 6 bulan, bukan mahasiswa unik</small></article>
+            <strong>{{ total_hadir }}</strong><small>Akumulasi {{ jumlah_bulan }} bulan, bukan mahasiswa unik</small></article>
           <article class="metric"><span class="metric-icon teal">✓</span><p>Latihan tuntas</p>
-            <strong>{{ total_tuntas }}</strong><small>Akumulasi 6 bulan</small></article>
+            <strong>{{ total_tuntas }}</strong><small>Akumulasi {{ jumlah_bulan }} bulan</small></article>
           <article class="metric"><span class="metric-icon amber">%</span><p>Tingkat ketuntasan</p>
             <strong>{{ "%.1f"|format(tingkat_total) }}%</strong><small>Tuntas ÷ hadir × 100</small></article>
           <article class="metric"><span class="metric-icon blue">◷</span><p>Kehadiran bulan terakhir</p>
             <strong>{{ terakhir.hadir }}</strong><small>{{ terakhir.bulan }} • {{ terakhir.tuntas }} tuntas</small></article>
+          <article class="metric"><span class="metric-icon violet">Ø</span><p>Rata-rata kehadiran / bulan</p>
+            <strong>{{ "%.1f"|format(rata_hadir) }}</strong><small>Total hadir ÷ {{ jumlah_bulan }} bulan, bukan mahasiswa unik</small></article>
         </section>
 
         <section id="grafik" class="charts" aria-label="Tiga grafik dashboard">
-          <article class="panel"><div class="panel-head"><div><h2>Kehadiran per bulan</h2><p>Perbandingan jumlah peserta tiap bulan</p></div><span class="tag">Batang</span></div>
-            <img src="data:image/png;base64,{{ grafik.batang }}" alt="Grafik batang kehadiran Januari sampai Juni"></article>
+          <article class="panel"><div class="panel-head"><div><h2>Jumlah Kehadiran Bulanan</h2><p>Perbandingan jumlah peserta tiap bulan</p></div><span class="tag">Batang</span></div>
+            <img src="data:image/png;base64,{{ grafik.batang }}" alt="Grafik batang kehadiran Januari sampai Agustus"></article>
           <article class="panel"><div class="panel-head"><div><h2>Tren ketuntasan</h2><p>Persentase latihan tuntas dari peserta hadir</p></div><span class="tag">Garis</span></div>
             <img src="data:image/png;base64,{{ grafik.garis }}" alt="Grafik garis tingkat ketuntasan tiap bulan"></article>
           <article class="panel pie-panel"><div class="panel-head"><div><h2>Komposisi {{ terakhir.bulan }}</h2><p>Tuntas dibanding belum tuntas</p></div><span class="tag">Donat</span></div>
