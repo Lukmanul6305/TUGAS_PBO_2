@@ -1,0 +1,92 @@
+
+{% extends "base.html" %}
+{% block title %}Evaluasi Akademik{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Evaluasi akademik &amp; kelulusan</h1>
+<p class="page-desc">Masukkan nilai komponen dan persentase kehadiran untuk melihat huruf mutu serta diagnosis kelulusan.</p>
+
+<div class="split">
+  <form class="panel" method="post">
+    <div class="field-row">
+      <label class="field">
+        <span>Nilai Tugas (30%)</span>
+        <input type="text" inputmode="decimal" name="tugas" value="{{ form.tugas }}" placeholder="80" required>
+      </label>
+      <label class="field">
+        <span>Nilai UTS (30%)</span>
+        <input type="text" inputmode="decimal" name="uts" value="{{ form.uts }}" placeholder="75" required>
+      </label>
+    </div>
+
+    <div class="field-row">
+      <label class="field">
+        <span>Nilai UAS (40%)</span>
+        <input type="text" inputmode="decimal" name="uas" value="{{ form.uas }}" placeholder="70" required>
+      </label>
+      <label class="field">
+        <span>Kehadiran (%)</span>
+        <input type="text" inputmode="decimal" name="kehadiran" value="{{ form.kehadiran }}" placeholder="85" required>
+      </label>
+    </div>
+
+    <button class="btn btn--primary" type="submit">Evaluasi Nilai</button>
+
+    <details class="formula">
+      <summary>Logika percabangan yang dipakai</summary>
+      <pre><code>akhir = tugas * 0.30 + uts * 0.30 + uas * 0.40
+
+if kehadiran &lt; 75:
+    lulus = False  # gugur syarat kehadiran
+else:
+    if akhir &gt;= 55 and uas &gt;= 40:
+        lulus = True
+    else:
+        lulus = False</code></pre>
+    </details>
+  </form>
+
+  <div class="stack">
+    <section class="display" aria-live="polite">
+      {% if error %}
+        <p class="display__msg display__msg--error">{{ error }}</p>
+      {% elif hasil %}
+        <p class="display__expr">Nilai Akhir: {{ hasil.akhir_teks }} ({{ hasil.predikat }})</p>
+        <p class="display__result">Grade {{ hasil.grade }}</p>
+        <span class="chip chip--{{ hasil.nada }}">{{ hasil.status }}</span>
+      {% else %}
+        <p class="display__msg">Hasil evaluasi nilai dan status kelulusan tampil di sini.</p>
+      {% endif %}
+    </section>
+
+    {% if hasil %}
+    <section class="panel">
+      <h2>Diagnosis percabangan</h2>
+      <dl class="summary">
+        <div><dt>Status akhir</dt><dd>{{ hasil.status }}</dd></div>
+        <div><dt>Huruf mutu</dt><dd>{{ hasil.grade }} ({{ hasil.predikat }})</dd></div>
+        <div><dt>Catatan evaluasi</dt><dd>{{ hasil.alasan }}</dd></div>
+      </dl>
+    </section>
+    {% endif %}
+
+    <section class="panel">
+      <div class="panel__head">
+        <h2>Riwayat evaluasi</h2>
+        {% if riwayat %}
+          <form method="post" action="{{ url_for('hapus_riwayat') }}">
+            <button class="link-btn" type="submit">Hapus riwayat</button>
+          </form>
+        {% endif %}
+      </div>
+      {% if riwayat %}
+        <ol class="history">
+          {% for item in riwayat %}<li>{{ item }}</li>{% endfor %}
+        </ol>
+      {% else %}
+        <p class="muted">Belum ada evaluasi. Coba nilai Tugas 80, UTS 75, UAS 35 untuk melihat efek syarat UAS.</p>
+      {% endif %}
+    </section>
+  </div>
+</div>
+{% endblock %}

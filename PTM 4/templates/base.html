@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Beranda{% endblock %} - Percabangan Hub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="{{ url_for('home') }}">
+        <span class="brand__mark">?:</span>
+        <span class="brand__name">Percabangan Hub</span>
+      </a>
+      <nav class="nav" aria-label="Navigasi utama">
+        {% set menu = [('home', 'Beranda'), ('akademik', 'Akademik'), ('diskon', 'Kasir Diskon'), ('beasiswa', 'Beasiswa')] %}
+        {% for endpoint, label in menu %}
+          <a href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint %} class="active" aria-current="page"{% endif %}>{{ label }}</a>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container">Proyek praktikum Python dan Flask tentang struktur percabangan (if, elif, else).</div>
+  </footer>
+</body>
+</html>

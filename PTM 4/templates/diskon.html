@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Kasir Diskon{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Kasir diskon bertingkat</h1>
+<p class="page-desc">Simulasikan potongan harga otomatis berdasarkan tier subtotal belanja dan status keanggotaan.</p>
+
+<div class="split">
+  <form class="panel" method="post">
+    <div class="field-row">
+      <label class="field">
+        <span>Harga satuan (Rp)</span>
+        <input type="text" inputmode="numeric" name="harga" value="{{ form.harga }}" required>
+      </label>
+      <label class="field">
+        <span>Jumlah barang</span>
+        <input type="text" inputmode="numeric" name="jumlah" value="{{ form.jumlah }}" required>
+      </label>
+    </div>
+
+    <fieldset class="ops">
+      <legend>Status pelanggan</legend>
+      <div class="ops__grid ops__grid--2">
+        <input type="radio" name="member" id="m-ya" value="member"{% if form.member == 'member' %} checked{% endif %}>
+        <label for="m-ya"><b>Member</b><small>Bonus diskon +2% s/d +5%</small></label>
+        <input type="radio" name="member" id="m-tidak" value="reguler"{% if form.member == 'reguler' %} checked{% endif %}>
+        <label for="m-tidak"><b>Non-Member</b><small>Tanpa diskon member</small></label>
+      </div>
+    </fieldset>
+
+    <label class="field">
+      <span>Uang bayar (Rp)</span>
+      <input type="text" inputmode="numeric" name="bayar" value="{{ form.bayar }}" required>
+    </label>
+
+    <button class="btn btn--primary" type="submit">Hitung nota</button>
+
+    <details class="formula">
+      <summary>Aturan percabangan diskon</summary>
+      <pre><code>if subtotal &gt;= 500_000:    diskon = 15%
+elif subtotal &gt;= 250_000:  diskon = 10%
+elif subtotal &gt;= 100_000:  diskon = 5%
+else:                      diskon = 0%
+
+# Bonus member (nested ternary)
+if status == 'member':
+    bonus = 5% if subtotal &gt;= 50_000 else 2%</code></pre>
+    </details>
+  </form>
+
+  <div class="stack">
+    <section class="display" aria-live="polite">
+      {% if error %}
+        <p class="display__msg display__msg--error">{{ error }}</p>
+      {% elif hasil %}
+        <p class="display__expr">Total Tagihan ({{ hasil.nama_tier }})</p>
+        <p class="display__result">{{ hasil.total_bayar | rupiah }}</p>
+        <span class="chip chip--{{ hasil.nada }}">{{ hasil.status_bayar }}</span>
+      {% else %}
+        <p class="display__msg">Isi data belanja, lalu pilih Hitung nota.</p>
+      {% endif %}
+    </section>
+
+    {% if hasil %}
+    <section class="panel">
+      <h2>Rincian nota</h2>
+      <dl class="summary">
+        <div><dt>Subtotal belanja</dt><dd>{{ hasil.subtotal | rupiah }}</dd></div>
+        <div><dt>Diskon utama ({{ hasil.persen_utama }}%)</dt><dd>- {{ hasil.diskon_utama | rupiah }}</dd></div>
+        <div><dt>Diskon member ({{ hasil.persen_member }}%)</dt><dd>- {{ hasil.diskon_member | rupiah }}</dd></div>
+        <div><dt>DPP (Setelah diskon)</dt><dd>{{ hasil.dpp | rupiah }}</dd></div>
+        <div><dt>PPN 11%</dt><dd>{{ hasil.ppn | rupiah }}</dd></div>
+        <div><dt>Uang bayar</dt><dd>{{ hasil.bayar | rupiah }}</dd></div>
+        <div>
+          <dt>{% if hasil.cukup %}Kembalian{% else %}Kekurangan bayar{% endif %}</dt>
+          <dd>{{ hasil.selisih | rupiah }}</dd>
+        </div>
+      </dl>
+    </section>
+    {% endif %}
+  </div>
+</div>
+
+{% if hasil %}
+<section class="panel schedule">
+  <h2>Evaluasi cabang tier diskon</h2>
+  <p class="muted">Menunjukkan bagaimana struktur <code>if-elif-else</code> memilih tepat satu cabang yang pertama kali bernilai <code>True</code>.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Tier Diskon</th><th class="num">Syarat Minimum</th><th class="num">Persentase</th><th class="num">Potongan</th><th>Status Cabang</th></tr>
+      </thead>
+      <tbody>
+        {% for baris in hasil.simulasi_tier %}
+        <tr>
+          <td>{{ baris.label }}</td>
+          <td class="num">{{ baris.batas | rupiah }}</td>
+          <td class="num">{{ baris.persen }}%</td>
+          <td class="num">{{ baris.potongan | rupiah }}</td>
+          <td>
+            {% if baris.aktif %}
+              <strong>Terpilih (True)</strong>
+            {% else %}
+              <span class="muted">Dilewati</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

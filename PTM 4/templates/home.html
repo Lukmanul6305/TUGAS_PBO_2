@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Beranda{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div>
+    <h1> Pengambilan keputusan berbasis Flask dengan percabangan Python</h1>
+    <p class="lead">Tiga simulator keputusan dalam satu aplikasi. Setiap halaman melatih struktur <code>if</code>, <code>if-else</code>, <code>if-elif-else</code>, percabangan bersarang, dan logika template Jinja2.</p>
+    <div class="actions">
+      <a class="btn btn--primary" href="{{ url_for('akademik') }}">Evaluasi akademik</a>
+      <a class="btn btn--ghost" href="{{ url_for('diskon') }}">Simulasi diskon</a>
+    </div>
+  </div>
+
+  <div class="display display--demo" aria-hidden="true">
+    <div class="demo-row"><span>if nilai &gt;= 85:</span><b>'A'</b></div>
+    <div class="demo-row"><span>elif nilai &gt;= 70:</span><b>'B'</b></div>
+    <div class="demo-row"><span>elif nilai &gt;= 55:</span><b>'C'</b></div>
+    <div class="demo-row"><span>else:</span><b>'D / E'</b></div>
+  </div>
+</section>
+
+<section class="tools">
+  <h2>Pilih simulator percabangan</h2>
+
+  <a class="tool" href="{{ url_for('akademik') }}">
+    <span class="tool__ops">if / elif / else</span>
+    <span class="tool__body">
+      <strong>Evaluasi akademik &amp; kelulusan</strong>
+      <span>Konversi nilai akhir ke huruf mutu A–E, diagnosis alasan tidak lulus dengan nested if, dan riwayat sesi.</span>
+    </span>
+  </a>
+
+  <a class="tool" href="{{ url_for('diskon') }}">
+    <span class="tool__ops">elif + member</span>
+    <span class="tool__body">
+      <strong>Kasir diskon bertingkat</strong>
+      <span>Hitung potongan belanja berdasarkan tier nominal, tambahan diskon member, PPN 11%, dan validasi uang bayar.</span>
+    </span>
+  </a>
+
+  <a class="tool" href="{{ url_for('beasiswa') }}">
+    <span class="tool__ops">nested if</span>
+    <span class="tool__body">
+      <strong>Seleksi kelayakan beasiswa</strong>
+      <span>Evaluasi multi-kriteria (IPK, penghasilan, semester, prestasi) lengkap dengan indikator skor dan cek syarat.</span>
+    </span>
+  </a>
+</section>
+{% endblock %}

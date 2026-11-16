@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Seleksi Beasiswa{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Seleksi kelayakan beasiswa</h1>
+<p class="page-desc">Masukkan data akademik dan ekonomi untuk menguji percabangan bersarang (nested if) multi-kriteria.</p>
+
+<div class="split">
+  <form class="panel" method="post">
+    <div class="field-row">
+      <label class="field">
+        <span>IPK (skala 4,00)</span>
+        <input type="text" inputmode="decimal" name="ipk" value="{{ form.ipk }}" placeholder="3,65" required>
+      </label>
+      <label class="field">
+        <span>Semester saat ini</span>
+        <input type="text" inputmode="numeric" name="semester" value="{{ form.semester }}" placeholder="4" required>
+      </label>
+    </div>
+
+    <label class="field">
+      <span>Penghasilan orang tua per bulan (Rp)</span>
+      <input type="text" inputmode="numeric" name="penghasilan" value="{{ form.penghasilan }}" placeholder="3500000" required>
+    </label>
+
+    <fieldset class="ops">
+      <legend>Capaian prestasi mahasiswa</legend>
+      <div class="ops__grid">
+        <input type="radio" name="prestasi" id="p-tidak" value="tidak"{% if form.prestasi == 'tidak' %} checked{% endif %}>
+        <label for="p-tidak"><b>-</b><small>Belum ada</small></label>
+        <input type="radio" name="prestasi" id="p-prov" value="provinsi"{% if form.prestasi == 'provinsi' %} checked{% endif %}>
+        <label for="p-prov"><b>Prov</b><small>Tingkat Provinsi</small></label>
+        <input type="radio" name="prestasi" id="p-nas" value="nasional"{% if form.prestasi == 'nasional' %} checked{% endif %}>
+        <label for="p-nas"><b>Nas</b><small>Tingkat Nasional</small></label>
+      </div>
+    </fieldset>
+
+    <button class="btn btn--primary" type="submit">Cek kelayakan</button>
+
+    <details class="formula">
+      <summary>Pohon keputusan (nested if)</summary>
+      <pre><code>if not (2 &lt;= semester &lt;= 8):
+    "Tidak Memenuhi Syarat"
+elif ipk &lt; 3.00:
+    "Belum Lolos Seleksi"
+else:
+    if ipk &gt;= 3.75 and (ekonomi or prestasi):
+        "Beasiswa Penuh (Unggulan)"
+    elif ipk &gt;= 3.50 and ekonomi:
+        "Beasiswa Penuh (Afirmasi)"
+    elif ipk &gt;= 3.25 or prestasi:
+        "Beasiswa Parsial"
+    elif ekonomi:
+        "Prioritas Cadangan"</code></pre>
+    </details>
+  </form>
+
+  <div class="stack">
+    <section class="display" aria-live="polite">
+      {% if error %}
+        <p class="display__msg display__msg--error">{{ error }}</p>
+      {% elif hasil %}
+        <p class="display__expr">{{ hasil.jalur }}</p>
+        <p class="display__result">{{ hasil.keputusan }}</p>
+        <span class="chip chip--{{ hasil.nada }}">Bantuan: {{ hasil.nominal | rupiah }} / semester</span>
+      {% else %}
+        <p class="display__msg">Keputusan seleksi beasiswa tampil di sini.</p>
+      {% endif %}
+    </section>
+
+    {% if hasil %}
+    <section class="panel">
+      <h2>Skor komposit &amp; verifikasi syarat</h2>
+      <div class="gauge" role="img" aria-label="Skor {{ hasil.skor }}, keputusan {{ hasil.keputusan }}">
+        <div class="gauge__bar">
+          <i class="g-obesitas"></i><i class="g-lebih"></i><i class="g-kurang"></i><i class="g-normal"></i>
+        </div>
+        <span class="gauge__marker" style="left: {{ hasil.posisi }}%"></span>
+        <div class="gauge__labels">
+          <span>Gugur</span><span>Cadangan</span><span>Parsial</span><span>Penuh</span>
+        </div>
+      </div>
+      <dl class="summary">
+        <div><dt>Skor kelayakan</dt><dd>{{ hasil.skor }} / 100</dd></div>
+        {% for item in hasil.daftar_syarat %}
+        <div>
+          <dt>{{ item.nama }}</dt>
+          <dd>{% if item.terpenuhi %}Terpenuhi (True){% else %}Tidak (False){% endif %}</dd>
+        </div>
+        {% endfor %}
+      </dl>
+      <p class="muted note">Simulasi ini memperagakan bagaimana kondisi boolean individual dievaluasi sebelum masuk ke percabangan bersarang.</p>
+    </section>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
