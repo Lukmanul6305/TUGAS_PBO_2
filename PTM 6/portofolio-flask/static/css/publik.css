@@ -1,0 +1,76 @@
+/* publik.css: halaman yang bisa dibuka tanpa login (beranda dan login) */
+
+/* ---------- Beranda ---------- */
+.bar { display: flex; align-items: center; justify-content: space-between; padding: 20px clamp(20px, 5vw, 64px); }
+.logo {
+  display: grid; place-items: center; min-width: 46px; height: 46px; padding: 0 12px; border-radius: 14px; white-space: nowrap;
+  background: var(--tinta); color: #fff; font-weight: 800; letter-spacing: -0.02em; text-decoration: none;
+}
+
+.hero-beranda {
+  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center;
+  max-width: 1320px; min-height: calc(100svh - 190px); margin: 0 auto; padding: 24px clamp(20px, 5vw, 64px) 56px;
+}
+.hero-beranda h1 { margin: 0; font-size: clamp(2.6rem, 7vw, 5.4rem); font-weight: 800; line-height: 0.98; letter-spacing: -0.045em; }
+.lead { max-width: 44ch; margin: 28px 0 0; font-size: 1.2rem; color: var(--abu); }
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 32px; }
+
+.isi-portofolio {
+  display: grid; grid-template-columns: repeat(3, 1fr); max-width: 1320px; margin: 0 auto;
+  border-top: 2px solid var(--tinta);
+}
+.isi-portofolio div { padding: 28px clamp(20px, 3vw, 48px) 40px; border-right: 2px solid var(--tinta); }
+.isi-portofolio div:last-child { border-right: 0; }
+.isi-portofolio strong { font-size: 1.2rem; letter-spacing: -0.01em; }
+.isi-portofolio p { margin: 6px 0 0; color: var(--abu); }
+
+/* ---------- Login ---------- */
+.login { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+.login__panel {
+  position: relative; display: flex; align-items: flex-end; overflow: hidden; background: var(--biru); color: #fff;
+  padding: clamp(28px, 5vw, 72px);
+}
+.login__panel h2 { position: relative; margin: 0; font-size: clamp(2.4rem, 5.5vw, 4.6rem); font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+.cincin--login { width: 62vmin; height: 62vmin; top: -10vmin; right: -14vmin; }
+
+.login__form { display: flex; flex-direction: column; justify-content: center; width: 100%; max-width: 580px; margin: 0 auto; padding: clamp(28px, 6vw, 88px); }
+.login__form h1 { margin: 0 0 8px; font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.04em; }
+.login__form > .muted { margin: 0 0 32px; }
+.kembali { align-self: flex-start; margin-bottom: 48px; color: var(--abu); font-weight: 600; }
+.kembali:hover { color: var(--tinta); }
+
+.isian { display: grid; gap: 8px; margin-bottom: 20px; }
+.isian label { font-weight: 700; font-size: 0.95rem; }
+.isian input {
+  width: 100%; height: 54px; padding: 0 16px; border: 2px solid var(--tinta); border-radius: 14px;
+  background: #fff; font: 1rem var(--sans); color: var(--tinta); transition: box-shadow 0.2s, border-color 0.2s;
+}
+.isian input:focus { outline: none; border-color: var(--biru); box-shadow: 4px 4px 0 var(--biru); }
+.isian__sandi { position: relative; }
+.isian__sandi input { padding-right: 130px; }
+.isian__sandi button {
+  position: absolute; top: 7px; right: 7px; bottom: 7px; padding: 0 14px; border: 0; border-radius: 9px;
+  background: var(--lila); color: var(--tinta); font: 700 0.85rem var(--sans); cursor: pointer;
+}
+.isian__sandi button:hover { background: #c9d0ff; }
+
+.demo { margin: 28px 0 0; padding: 12px 16px; border-radius: 12px; background: var(--lila); font-size: 0.92rem; }
+.demo code { font: 700 0.92rem var(--mono); }
+
+/* ---------- Halaman 404 ---------- */
+.galat { display: grid; place-content: center; justify-items: start; gap: 16px; min-height: 100svh; padding: 40px clamp(20px, 6vw, 80px); }
+.galat b { font-size: clamp(6rem, 22vw, 14rem); font-weight: 800; line-height: 0.85; letter-spacing: -0.06em; color: var(--biru); }
+.galat h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -0.03em; }
+.galat p { margin: 0 0 8px; }
+
+/* ---------- Responsif ---------- */
+@media (max-width: 860px) {
+  .hero-beranda { grid-template-columns: 1fr; gap: 24px; min-height: 0; }
+  .orbit { width: min(100%, 360px); }
+  .isi-portofolio { grid-template-columns: 1fr; }
+  .isi-portofolio div { border-right: 0; border-bottom: 2px solid var(--tinta); }
+  .isi-portofolio div:last-child { border-bottom: 0; }
+  .login { grid-template-columns: 1fr; }
+  .login__panel { min-height: 200px; }
+  .kembali { margin-bottom: 28px; }
+}

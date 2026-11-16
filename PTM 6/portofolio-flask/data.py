@@ -1,0 +1,60 @@
+"""Seluruh isi portofolio. Template hanya membaca dictionary ini: ganti isinya dengan data Anda."""
+
+PROFIL = {
+    'nama': 'Muhammad Erwanto',
+    'inisial': 'Mr.R1',
+    'peran': ['Web Developer', 'Python Enthusiast', 'UI Tinkerer'],
+    'tagline': 'Membangun aplikasi web yang rapi, cepat, dan nyaman dipakai.',
+    'email': 'erwanto@example.com',
+    'tentang': [
+        'Saya membangun aplikasi web dengan Python dan Flask, dari rancangan data sampai tampilan yang enak dilihat.',
+        'Saya suka merapikan hal kecil: jarak antar elemen, animasi yang bermakna, dan kode yang mudah dibaca ulang.',
+    ],
+    'info': [
+        ('Fokus', 'Web dan Python'),
+        ('Lokasi', 'Indonesia'),
+        ('Status', 'Terbuka untuk proyek'),
+        ('Bahasa', 'Indonesia, Inggris'),
+    ],
+    'statistik': [
+        {'angka': 12, 'label': 'Proyek selesai'},
+        {'angka': 3, 'label': 'Tahun belajar'},
+        {'angka': 8, 'label': 'Teknologi dikuasai'},
+        {'angka': 5, 'label': 'Sertifikat'},
+    ],
+    'skill': [
+        {'nama': 'Python', 'nilai': 90},
+        {'nama': 'Flask', 'nilai': 85},
+        {'nama': 'HTML dan CSS', 'nilai': 88},
+        {'nama': 'JavaScript', 'nilai': 70},
+        {'nama': 'Jinja2', 'nilai': 82},
+        {'nama': 'Git', 'nilai': 75},
+    ],
+    'teknologi': ['Python', 'Flask', 'Jinja2', 'HTML', 'CSS'],
+    'proyek': [
+        {'judul': 'Kalkulator Hub', 'deskripsi': 'Kumpulan kalkulator harian dalam satu aplikasi web.',
+         'tag': 'Web', 'ikon': '//', 'hue': 232, 'tautan': '#'},
+        {'judul': 'Catatan Cepat', 'deskripsi': 'Aplikasi catatan sederhana dengan pencarian instan.',
+         'tag': 'Web', 'ikon': '{}', 'hue': 18, 'tautan': '#'},
+        {'judul': 'Bot Rekap Data', 'deskripsi': 'Skrip Python yang merapikan data mentah menjadi laporan.',
+         'tag': 'Python', 'ikon': '>>', 'hue': 150, 'tautan': '#'},
+        {'judul': 'Pembersih CSV', 'deskripsi': 'Alat baris perintah untuk membersihkan berkas CSV berantakan.',
+         'tag': 'Python', 'ikon': '#!', 'hue': 280, 'tautan': '#'},
+        {'judul': 'Kit Animasi', 'deskripsi': 'Kumpulan animasi CSS dan JavaScript murni yang siap pakai.',
+         'tag': 'UI', 'ikon': '~', 'hue': 340, 'tautan': '#'},
+        {'judul': 'Desain Dasbor', 'deskripsi': 'Eksperimen tata letak dasbor dengan garis tegas dan warna berani.',
+         'tag': 'UI', 'ikon': '[]', 'hue': 200, 'tautan': '#'},
+    ],
+    'pengalaman': [
+        {'periode': '2025', 'posisi': 'Pengembang Web Lepas', 'tempat': 'Proyek mandiri',
+         'uraian': 'Mengerjakan situs dan aplikasi kecil untuk klien perorangan.'},
+        {'periode': '2024', 'posisi': 'Asisten Praktikum', 'tempat': 'Laboratorium Komputer',
+         'uraian': 'Membantu teman belajar Python dan dasar pengembangan web.'},
+        {'periode': '2023', 'posisi': 'Mulai Belajar Pemrograman', 'tempat': 'Belajar mandiri',
+         'uraian': 'Membangun proyek pertama dengan Python dan HTML.'},
+    ],
+    'sosial': [
+        {'nama': 'GitHub', 'url': 'https://github.com/'},
+        {'nama': 'LinkedIn', 'url': 'https://www.linkedin.com/'},
+    ],
+}

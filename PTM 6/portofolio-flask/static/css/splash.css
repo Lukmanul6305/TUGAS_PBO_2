@@ -1,0 +1,52 @@
+/* splash.css: layar pembuka. Latar memakai --biru, jadi warnanya ikut berubah bila variabel diganti. */
+.splash {
+  position: relative; display: flex; flex-direction: column; justify-content: center;
+  min-height: 100svh; overflow: hidden; padding: clamp(24px, 6vw, 80px);
+  background: var(--biru); color: #fff;
+}
+.splash__nama {
+  position: relative; margin: 0; font-size: clamp(3rem, 11vw, 9rem); font-weight: 800;
+  line-height: 0.98; letter-spacing: -0.045em;
+}
+
+.kata {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em; margin-bottom: -0.12em; /* ruang untuk huruf berekor (g, y, p) */
+} /* topeng: huruf tersembunyi di bawah garis */
+.huruf {
+  display: inline-block;
+  transform: translateY(105%);
+  animation: naik 0.9s var(--ease) forwards;
+  animation-delay: calc(var(--i) * 55ms + 250ms); /* tiap huruf terlambat 55 ms */
+}
+
+.splash__hitung {
+  position: absolute; left: clamp(24px, 6vw, 80px); bottom: 44px;
+  font-weight: 800; font-size: clamp(3rem, 9vw, 6.5rem); line-height: 1; letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+.splash__hitung small { margin-left: 4px; font-size: 0.4em; color: var(--jingga); }
+
+.splash__garis { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: rgba(255, 255, 255, 0.2); }
+.splash__garis i { display: block; width: 0; height: 100%; background: var(--jingga); }
+
+.splash__lewati {
+  position: absolute; top: clamp(16px, 3vw, 32px); right: clamp(16px, 3vw, 40px); z-index: 5;
+  padding: 8px 20px; border: 2px solid #fff; border-radius: 999px; color: #fff;
+  font-weight: 700; text-decoration: none; transition: background 0.2s, color 0.2s;
+}
+.splash__lewati:hover { background: #fff; color: var(--biru); }
+.cincin--splash { width: 70vmin; height: 70vmin; right: -16vmin; bottom: -22vmin; }
+
+.tirai {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: var(--kertas);
+  transform: translateY(100%);
+  transition: transform 0.8s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.keluar .tirai {
+  transform: translateY(0);
+}

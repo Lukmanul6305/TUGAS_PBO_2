@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Beranda - {{ profil.nama }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/publik.css') }}">{% endblock %}
+{% block body_class %}halaman-beranda{% endblock %}
+
+{% block content %}
+{% include "_flash.html" %}
+
+<header class="bar">
+  <a class="logo" href="{{ url_for('beranda') }}" aria-label="Beranda">{{ profil.inisial }}</a>
+</header>
+
+<main>
+  <section class="hero-beranda">
+    <div>
+      <h1>
+        <span class='baris'><span>Halo, saya {{ profil.nama }}.</span></span>
+        <span class='baris biru'><span>
+          <span class='ketik' data-ketik='{{ profil.peran | tojson }}' aria-hidden='true'></span><span class='kursor' aria-hidden='true'></span>
+          <span class='sr-only'>{{ profil.peran | join(', ') }}</span>
+        </span></span>
+      </h1>
+      <p class="lead">{{ profil.tagline }}</p>
+      <div class="cta">
+        <a class="btn btn--biru" href="{{ url_for('login') }}">Masuk</a>
+        <span class="muted">Portofolio dibuka setelah login.</span>
+      </div>
+    </div>
+
+    <div class="orbit" aria-hidden="true">
+      <div class="blob"><span>{{ profil.inisial }}</span></div>
+      <i class="titik titik--1"></i><i class="titik titik--2"></i>
+      {% for t in profil.teknologi[:3] %}<span class="chip chip--{{ loop.index }}">{{ t }}</span>{% endfor %}
+    </div>
+  </section>
+
+  <section class="isi-portofolio" aria-label="Isi portofolio">
+    <div><strong>{{ profil.proyek | length }} proyek pilihan</strong><p>Dari aplikasi web hingga eksperimen antarmuka.</p></div>
+    <div><strong>{{ profil.skill | length }} skill utama</strong><p>{{ profil.teknologi[:4] | join(', ') }}, dan lainnya.</p></div>
+    <div><strong>{{ profil.pengalaman | length }} catatan pengalaman</strong><p>Perjalanan belajar dan bekerja, lengkap dengan kontak.</p></div>
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ketik.js') }}" defer></script>
+{% endblock %}

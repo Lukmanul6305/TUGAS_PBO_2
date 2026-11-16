@@ -1,0 +1,9 @@
+{% with pesan = get_flashed_messages(with_categories=true) %}
+  {% if pesan %}
+  <div class="flash-wrap" role="status">
+    {% for kategori, teks in pesan %}
+      <p class="flash flash--{{ kategori }}">{{ teks }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}

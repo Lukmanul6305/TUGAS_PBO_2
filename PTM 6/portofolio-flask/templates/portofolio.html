@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}Portofolio - {{ profil.nama }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/portofolio.css') }}">{% endblock %}
+{% block body_class %}halaman-porto{% endblock %}
+
+{% block content %}
+<div class="progres" aria-hidden="true"><i id="bar-progres"></i></div>
+{% include "_flash.html" %}
+
+<header class="nav" id="nav">
+  <a class="logo" href="#atas" aria-label="Ke atas">{{ profil.inisial }}</a>
+  <nav class="nav__tautan" aria-label="Bagian halaman">
+    <a href="#tentang">Tentang</a>
+    <a href="#skill">Skill</a>
+    <a href="#proyek">Proyek</a>
+    <a href="#pengalaman">Pengalaman</a>
+    <a href="#kontak">Kontak</a>
+  </nav>
+  <form method="post" action="{{ url_for('logout') }}">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <button class="btn btn--kecil" type="submit">Keluar</button>
+  </form>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero lebar" id="atas">
+    <div>
+      <p class="lencana"><i></i>Masuk sebagai {{ session.nama }}</p>
+      <h1>
+        <span class="baris"><span>Saya {{ profil.nama }}.</span></span>
+        <span class="baris biru"><span>
+          <span class="ketik" data-ketik='{{ profil.peran | tojson }}' aria-hidden="true"></span><span class="kursor" aria-hidden="true"></span>
+          <span class="sr-only">{{ profil.peran | join(', ') }}</span>
+        </span></span>
+      </h1>
+      <p class="tagline">{{ profil.tagline }}</p>
+      <div class="cta">
+        <a class="btn btn--biru" href="#proyek">Lihat proyek</a>
+        <a class="btn" href="#kontak">Hubungi saya</a>
+      </div>
+    </div>
+
+    <div class="orbit" aria-hidden="true">
+      <div class="blob"><span>{{ profil.inisial }}</span></div>
+      <i class="titik titik--1"></i><i class="titik titik--2"></i>
+      {% for t in profil.teknologi[:3] %}<span class="chip chip--{{ loop.index }}">{{ t }}</span>{% endfor %}
+    </div>
+  </section>
+
+  <div class="lebar">
+    <div class="statistik">
+      {% for s in profil.statistik %}
+        <div class="stat"><b data-hitung="{{ s.angka }}">{{ s.angka }}</b><span>{{ s.label }}</span></div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="marquee-bungkus" aria-hidden="true">
+    <div class="marquee">
+      <div class="marquee__lajur">
+        {% for t in profil.teknologi * 2 %}<span>{{ t }}</span>{% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- TENTANG -->
+  <section class="seksi lebar" id="tentang">
+    <h2 class="judul muncul"><span>Tentang saya</span></h2>
+    <div class="tentang">
+      <div class="tentang__teks">
+        {% for paragraf in profil.tentang %}<p>{{ paragraf }}</p>{% endfor %}
+      </div>
+      <dl class="info">
+        {% for label, nilai in profil.info %}
+          <div><dt>{{ label }}</dt><dd>{{ nilai }}</dd></div>
+        {% endfor %}
+      </dl>
+    </div>
+  </section>
+
+  <!-- SKILL -->
+  <section class="seksi lebar" id="skill">
+    <h2 class="judul muncul"><span>Skill</span></h2>
+    <div class="skill-grid">
+      {% for s in profil.skill %}
+        <div class="skill muncul" style="--lebar: {{ s.nilai }}%">
+          <div class="skill__atas"><span>{{ s.nama }}</span><b>{{ s.nilai }}%</b></div>
+          <div class="skill__trek"><i></i></div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- PROYEK -->
+  <section class="seksi lebar" id="proyek">
+    <h2 class="judul muncul"><span>Proyek pilihan</span></h2>
+
+    {% set kategori = profil.proyek | map(attribute='tag') | unique | list %}
+    <div class="filter-bar" role="group" aria-label="Filter proyek">
+      <button class="filter" type="button" data-filter="semua" aria-pressed="true">Semua</button>
+      {% for k in kategori %}
+        <button class="filter" type="button" data-filter="{{ k }}" aria-pressed="false">{{ k }}</button>
+      {% endfor %}
+    </div>
+
+    <div class="proyek-grid">
+      {% for p in profil.proyek %}
+        <article class="proyek muncul" data-tag="{{ p.tag }}" style="--hue: {{ p.hue }}; --n: {{ loop.index0 % 3 }}">
+          <div class="proyek__gambar" aria-hidden="true"><span>{{ p.ikon }}</span></div>
+          <div class="proyek__isi">
+            <span class="tag">{{ p.tag }}</span>
+            <h3>{{ p.judul }}</h3>
+            <p>{{ p.deskripsi }}</p>
+            <a href="{{ p.tautan }}">Lihat detail</a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- PENGALAMAN -->
+  <section class="seksi lebar" id="pengalaman">
+    <h2 class="judul muncul"><span>Pengalaman</span></h2>
+    <div class="garis-waktu muncul">
+      {% for e in profil.pengalaman %}
+        <article class="pengalaman" style="--n: {{ loop.index0 }}">
+          <span class="periode">{{ e.periode }}</span>
+          <h3>{{ e.posisi }}</h3>
+          <p class="tempat">{{ e.tempat }}</p>
+          <p>{{ e.uraian }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- KONTAK -->
+  <section class="seksi lebar" id="kontak">
+    <div class="kontak">
+      <span class="cincin cincin--kontak" aria-hidden="true"></span>
+      <h2>Mari bekerja sama.</h2>
+      <a class="email" href="mailto:{{ profil.email }}">{{ profil.email }}</a>
+      <div class="kontak__aksi">
+        <button class="btn btn--putih" type="button" id="salin-email" data-email="{{ profil.email }}">Salin email</button>
+      </div>
+      <div class="sosial">
+        {% for s in profil.sosial %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.nama }}</a>{% endfor %}
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="kaki lebar">
+  <span>{{ profil.nama }}</span>
+  <span>Dibuat dengan Python dan Flask.</span>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ketik.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/portofolio.js') }}" defer></script>
+{% endblock %}

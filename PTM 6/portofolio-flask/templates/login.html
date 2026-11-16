@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Masuk - {{ profil.nama }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/publik.css') }}">{% endblock %}
+{% block body_class %}halaman-login{% endblock %}
+
+{% block content %}
+{% include "_flash.html" %}
+
+<main class="login">
+  <aside class="login__panel" aria-hidden="true">
+    <span class="cincin cincin--login"></span>
+    <h2>Satu langkah lagi.</h2>
+  </aside>
+
+  <section class="login__form">
+    <a class="kembali" href="{{ url_for('beranda') }}">Kembali ke beranda</a>
+    <h1>Masuk</h1>
+    <p class="muted">Masuk untuk membuka portofolio {{ profil.nama }}.</p>
+
+    <form method="post">
+      <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+
+      <div class="isian">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" value="{{ username }}" autocomplete="username" autofocus required>
+      </div>
+
+      <div class="isian">
+        <label for="sandi">Password</label>
+        <div class="isian__sandi">
+          <input type="password" id="sandi" name="password" autocomplete="current-password" required>
+          <button type="button" id="tombol-sandi" aria-pressed="false">Tampilkan</button>
+        </div>
+      </div>
+
+      <button class="btn btn--biru btn--penuh" type="submit">Masuk</button>
+    </form>
+
+    <p class="demo">Akun demo praktikum: <code>mahasiswa</code> dan <code>praktikum123</code></p>
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/login.js') }}" defer></script>
+{% endblock %}
